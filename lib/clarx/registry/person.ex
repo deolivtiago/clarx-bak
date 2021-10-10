@@ -1,7 +1,6 @@
 defmodule Clarx.Registry.Person do
-  import Ecto.Changeset
-
   use Clarx.Schema
+  import Ecto.Changeset
 
   schema "persons" do
     field :name, :string

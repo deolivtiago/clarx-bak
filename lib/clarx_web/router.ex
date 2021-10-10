@@ -9,6 +9,7 @@ defmodule ClarxWeb.Router do
     pipe_through(:api)
 
     resources "/persons", PersonController, except: [:new, :edit]
+    resources "/countries", CountryController, except: [:new, :edit]
   end
 
   # Enables LiveDashboard only for development

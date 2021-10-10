@@ -1,25 +1,25 @@
-defmodule Clarx.Geo.Country do
+defmodule Clarx.Geo.State do
   use Clarx.Schema
   import Ecto.Changeset
-  alias Clarx.Geo.State
+  alias Clarx.Geo.Country
 
-  schema "countries" do
+  schema "states" do
     field :code, :string
     field :name, :string
-    has_many :states, State, on_replace: :delete
+    belongs_to :country, Country
 
     timestamps()
   end
 
   @doc false
-  def changeset(country, attrs) do
-    country
+  def changeset(state, attrs) do
+    state
     |> cast(attrs, [:id, :name, :code])
     |> validate_required([:name, :code])
     |> unique_constraint(:code)
     |> validate_length(:code, max: 5)
     |> validate_length(:name, max: 150)
     |> update_change(:code, &String.upcase/1)
-    |> cast_assoc(:states)
+    |> assoc_constraint(:country)
   end
 end

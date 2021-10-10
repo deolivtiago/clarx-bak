@@ -23,4 +23,24 @@ defmodule Clarx.GeoFixtures do
 
     country
   end
+
+  @doc """
+  Generate a unique state code.
+  """
+  def unique_state_code, do: "some code#{System.unique_integer([:positive])}"
+
+  @doc """
+  Generate a state.
+  """
+  def state_fixture(attrs \\ %{}) do
+    {:ok, state} =
+      attrs
+      |> Enum.into(%{
+        code: unique_state_code(),
+        name: "some name"
+      })
+      |> Clarx.Geo.create_state()
+
+    state
+  end
 end

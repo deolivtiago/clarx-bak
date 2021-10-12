@@ -114,4 +114,58 @@ defmodule Clarx.GeoTest do
       assert %Ecto.Changeset{} = Geo.change_state(state)
     end
   end
+
+  describe "cities" do
+    alias Clarx.Geo.City
+
+    import Clarx.GeoFixtures
+
+    @invalid_attrs %{name: nil}
+
+    test "list_cities/0 returns all cities" do
+      city = city_fixture()
+      assert Geo.list_cities() == [city]
+    end
+
+    test "get_city!/1 returns the city with given id" do
+      city = city_fixture()
+      assert Geo.get_city!(city.id) == city
+    end
+
+    test "create_city/1 with valid data creates a city" do
+      valid_attrs = %{name: "some name"}
+
+      assert {:ok, %City{} = city} = Geo.create_city(valid_attrs)
+      assert city.name == "some name"
+    end
+
+    test "create_city/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Geo.create_city(@invalid_attrs)
+    end
+
+    test "update_city/2 with valid data updates the city" do
+      city = city_fixture()
+      update_attrs = %{name: "some updated name"}
+
+      assert {:ok, %City{} = city} = Geo.update_city(city, update_attrs)
+      assert city.name == "some updated name"
+    end
+
+    test "update_city/2 with invalid data returns error changeset" do
+      city = city_fixture()
+      assert {:error, %Ecto.Changeset{}} = Geo.update_city(city, @invalid_attrs)
+      assert city == Geo.get_city!(city.id)
+    end
+
+    test "delete_city/1 deletes the city" do
+      city = city_fixture()
+      assert {:ok, %City{}} = Geo.delete_city(city)
+      assert_raise Ecto.NoResultsError, fn -> Geo.get_city!(city.id) end
+    end
+
+    test "change_city/1 returns a city changeset" do
+      city = city_fixture()
+      assert %Ecto.Changeset{} = Geo.change_city(city)
+    end
+  end
 end

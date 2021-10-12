@@ -1,12 +1,13 @@
 defmodule Clarx.Geo.State do
   use Clarx.Schema
   import Ecto.Changeset
-  alias Clarx.Geo.Country
+  alias Clarx.Geo.{City, Country}
 
   schema "states" do
     field :code, :string
     field :name, :string
     belongs_to :country, Country
+    has_many :cities, City, on_replace: :delete
 
     timestamps()
   end
@@ -21,5 +22,6 @@ defmodule Clarx.Geo.State do
     |> validate_length(:name, max: 150)
     |> update_change(:code, &String.upcase/1)
     |> assoc_constraint(:country)
+    |> cast_assoc(:cities)
   end
 end

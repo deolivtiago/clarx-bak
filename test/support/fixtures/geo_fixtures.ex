@@ -43,4 +43,18 @@ defmodule Clarx.GeoFixtures do
 
     state
   end
+
+  @doc """
+  Generate a city.
+  """
+  def city_fixture(attrs \\ %{}) do
+    {:ok, city} =
+      attrs
+      |> Enum.into(%{
+        name: "some name"
+      })
+      |> Clarx.Geo.create_city()
+
+    city
+  end
 end

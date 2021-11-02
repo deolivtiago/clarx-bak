@@ -24,4 +24,22 @@ defmodule Clarx.RegistryFixtures do
 
     person
   end
+
+  @doc """
+  Generate a address.
+  """
+  def address_fixture(attrs \\ %{}) do
+    {:ok, address} =
+      attrs
+      |> Enum.into(%{
+        alias: "some alias",
+        neighborhood: "some neighborhood",
+        number: "some number",
+        street: "some street",
+        zip: "some zip"
+      })
+      |> Clarx.Registry.create_address()
+
+    address
+  end
 end

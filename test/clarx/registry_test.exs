@@ -60,4 +60,66 @@ defmodule Clarx.RegistryTest do
       assert %Ecto.Changeset{} = Registry.change_person(person)
     end
   end
+
+  describe "addresses" do
+    alias Clarx.Registry.Address
+
+    import Clarx.RegistryFixtures
+
+    @invalid_attrs %{alias: nil, neighborhood: nil, number: nil, street: nil, zip: nil}
+
+    test "list_addresses/0 returns all addresses" do
+      address = address_fixture()
+      assert Registry.list_addresses() == [address]
+    end
+
+    test "get_address!/1 returns the address with given id" do
+      address = address_fixture()
+      assert Registry.get_address!(address.id) == address
+    end
+
+    test "create_address/1 with valid data creates a address" do
+      valid_attrs = %{alias: "some alias", neighborhood: "some neighborhood", number: "some number", street: "some street", zip: "some zip"}
+
+      assert {:ok, %Address{} = address} = Registry.create_address(valid_attrs)
+      assert address.alias == "some alias"
+      assert address.neighborhood == "some neighborhood"
+      assert address.number == "some number"
+      assert address.street == "some street"
+      assert address.zip == "some zip"
+    end
+
+    test "create_address/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Registry.create_address(@invalid_attrs)
+    end
+
+    test "update_address/2 with valid data updates the address" do
+      address = address_fixture()
+      update_attrs = %{alias: "some updated alias", neighborhood: "some updated neighborhood", number: "some updated number", street: "some updated street", zip: "some updated zip"}
+
+      assert {:ok, %Address{} = address} = Registry.update_address(address, update_attrs)
+      assert address.alias == "some updated alias"
+      assert address.neighborhood == "some updated neighborhood"
+      assert address.number == "some updated number"
+      assert address.street == "some updated street"
+      assert address.zip == "some updated zip"
+    end
+
+    test "update_address/2 with invalid data returns error changeset" do
+      address = address_fixture()
+      assert {:error, %Ecto.Changeset{}} = Registry.update_address(address, @invalid_attrs)
+      assert address == Registry.get_address!(address.id)
+    end
+
+    test "delete_address/1 deletes the address" do
+      address = address_fixture()
+      assert {:ok, %Address{}} = Registry.delete_address(address)
+      assert_raise Ecto.NoResultsError, fn -> Registry.get_address!(address.id) end
+    end
+
+    test "change_address/1 returns a address changeset" do
+      address = address_fixture()
+      assert %Ecto.Changeset{} = Registry.change_address(address)
+    end
+  end
 end

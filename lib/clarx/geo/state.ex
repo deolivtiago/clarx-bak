@@ -15,7 +15,7 @@ defmodule Clarx.Geo.State do
   @doc false
   def changeset(state, attrs) do
     state
-    |> cast(attrs, [:id, :name, :code])
+    |> cast(attrs, [:id, :name, :code, :country_id])
     |> validate_required([:name, :code])
     |> unique_constraint(:code)
     |> validate_length(:code, max: 5)

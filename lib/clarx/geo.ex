@@ -246,7 +246,11 @@ defmodule Clarx.Geo do
       ** (Ecto.NoResultsError)
 
   """
-  def get_city!(id), do: Repo.get!(City, id)
+  def get_city!(id) do
+    City
+    |> Repo.get!(id)
+    |> Repo.preload(:addresses)
+  end
 
   @doc """
   Creates a city.
@@ -265,6 +269,10 @@ defmodule Clarx.Geo do
     |> Ecto.build_assoc(:cities)
     |> City.changeset(attrs)
     |> Repo.insert()
+    |> case do
+      {:ok, %City{} = city} -> {:ok, Repo.preload(city, :addresses)}
+      error -> error
+    end
   end
 
   @doc """

@@ -8,7 +8,9 @@ defmodule ClarxWeb.Router do
   scope "/api", ClarxWeb do
     pipe_through(:api)
 
-    resources "/persons", PersonController, except: [:new, :edit]
+    resources "/persons", PersonController, except: [:new, :edit] do
+      resources "/addresses", AddressController, except: [:new, :edit]
+    end
 
     resources "/countries", CountryController, except: [:new, :edit] do
       resources "/states", StateController, except: [:new, :edit] do
